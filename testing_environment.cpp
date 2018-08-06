@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "testing_environment.hpp"
-#include "image_processing.hpp"
+#include "adaptive_manifold.hpp"
 
 int main(int argc, char **argv) {
     cv::Mat street_image = cv::imread("street.jpg");
