@@ -1,0 +1,3 @@
+C:/Users/some1/source/AdaptiveManifolds/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles/Image_preprocessing_pipeline.dir
+C:/Users/some1/source/AdaptiveManifolds/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/some1/source/AdaptiveManifolds/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles/rebuild_cache.dir
