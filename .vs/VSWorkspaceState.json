@@ -2,6 +2,10 @@
   "ExpandedNodes": [
     ""
   ],
+<<<<<<< HEAD
   "SelectedNode": "\\adaptive_manifold.hpp",
+=======
+  "SelectedNode": "\\CMakeLists.txt",
+>>>>>>> develop
   "PreviewInSolutionExplorer": false
 }

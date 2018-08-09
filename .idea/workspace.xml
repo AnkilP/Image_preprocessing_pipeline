@@ -35,12 +35,17 @@
       <config projectName="Image_preprocessing_pipeline" targetName="Image_preprocessing_pipeline" />
     </generated>
   </component>
+<<<<<<< HEAD
   <component name="CMakeSettings">
+=======
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+>>>>>>> develop
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="3fce3de1-b3c1-4a75-9fb2-e426418730a5" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/adaptive_manifold.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/adaptive_manifold.hpp" afterDir="false" />
@@ -48,6 +53,9 @@
       <change beforePath="$PROJECT_DIR$/image_processing.hpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/testing_environment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing_environment.cpp" afterDir="false" />
     </list>
+=======
+    <list default="true" id="3fce3de1-b3c1-4a75-9fb2-e426418730a5" name="Default Changelist" comment="" />
+>>>>>>> develop
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,41 +68,77 @@
     <session id="-1935438645">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+<<<<<<< HEAD
           <entry key="project.closed" value="2" />
           <entry key="project.open.time.29" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.opened" value="2" />
+=======
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.24" value="2" />
+          <entry key="project.open.time.29" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="4" />
+>>>>>>> develop
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="cpp" value="4" />
+<<<<<<< HEAD
           <entry key="hpp" value="3" />
           <entry key="txt" value="1" />
+=======
+          <entry key="hpp" value="6" />
+          <entry key="txt" value="3" />
+>>>>>>> develop
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+<<<<<<< HEAD
           <entry key="CMakeLists.txt" value="1" />
           <entry key="ObjectiveC" value="7" />
+=======
+          <entry key="CMakeLists.txt" value="3" />
+          <entry key="ObjectiveC" value="10" />
+>>>>>>> develop
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+<<<<<<< HEAD
           <entry key="cpp" value="1065" />
           <entry key="hpp" value="2263" />
           <entry key="txt" value="51" />
+=======
+          <entry key="cpp" value="1566" />
+          <entry key="hpp" value="3323" />
+          <entry key="txt" value="170" />
+>>>>>>> develop
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+<<<<<<< HEAD
           <entry key="CMakeLists.txt" value="51" />
           <entry key="ObjectiveC" value="3328" />
+=======
+          <entry key="CMakeLists.txt" value="126" />
+          <entry key="ObjectiveC" value="4889" />
+          <entry key="PLAIN_TEXT" value="44" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.create.new" value="1" />
+>>>>>>> develop
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -131,12 +175,45 @@
             </entry>
           </file>
         </leaf>
+=======
+    <splitter split-orientation="horizontal" split-proportion="0.39179105">
+      <split-first>
+        <splitter split-orientation="vertical" split-proportion="0.7020585">
+          <split-first>
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/testing_environment.cpp">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="221">
+                      <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-first>
+          <split-second>
+            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+              <file pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="102">
+                      <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-second>
+        </splitter>
+>>>>>>> develop
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/adaptive_manifold.hpp">
               <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                 <state relative-caret-position="416">
                   <caret line="436" column="23" selection-start-line="436" selection-start-column="23" selection-end-line="436" selection-end-column="23" />
                   <folding>
@@ -150,6 +227,10 @@
                     <element signature="e#4091#4103#0" expanded="true" />
                     <element signature="e#4266#4278#0" expanded="true" />
                   </folding>
+=======
+                <state relative-caret-position="335">
+                  <caret line="878" column="77" lean-forward="true" selection-start-line="878" selection-start-column="77" selection-end-line="878" selection-end-column="77" />
+>>>>>>> develop
                 </state>
               </provider>
             </entry>
@@ -175,23 +256,55 @@
       <find>Buf</find>
       <find>buildManifoldsAndPerformFiltering</find>
       <find>subtract</find>
+<<<<<<< HEAD
       <find>buf_.</find>
+=======
+      <find>srcSize</find>
+      <find>sqrt(</find>
+      <find>buf.</find>
+      <find>t</find>
+      <find>buf_.</find>
+      <find>create</find>
+>>>>>>> develop
     </findStrings>
     <replaceStrings>
       <replace>cv::Mat_</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+<<<<<<< HEAD
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+=======
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="AnkilP &lt;a293pate@uwaterloo.ca&gt;A" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="SIGN_OFF_COMMIT" value="true" />
+>>>>>>> develop
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/testing_environment.cpp" />
         <option value="$PROJECT_DIR$/adaptive_manifold.cpp" />
         <option value="$PROJECT_DIR$/image_processing.cpp" />
         <option value="$PROJECT_DIR$/adaptive_manifold.hpp" />
+=======
+        <option value="$PROJECT_DIR$/adaptive_manifold.cpp" />
+        <option value="$PROJECT_DIR$/image_processing.cpp" />
+        <option value="$PROJECT_DIR$/adaptive_manifold.hpp" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/testing_environment.cpp" />
+>>>>>>> develop
       </list>
     </option>
   </component>
@@ -203,15 +316,23 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
+<<<<<<< HEAD
     <option name="x" value="1846" />
     <option name="y" value="-24" />
     <option name="width" value="1400" />
     <option name="height" value="774" />
+=======
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="1939" />
+    <option name="height" value="1049" />
+>>>>>>> develop
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
+<<<<<<< HEAD
     <panes>
       <pane id="ProjectPane">
         <subPane>
@@ -226,6 +347,9 @@
       </pane>
       <pane id="Scope" />
     </panes>
+=======
+    <panes />
+>>>>>>> develop
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -270,11 +394,29 @@
       <updated>1533240109371</updated>
       <workItem from="1533240112051" duration="9774000" />
       <workItem from="1533313050936" duration="12469000" />
+<<<<<<< HEAD
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="22243000" />
+=======
+      <workItem from="1533648416999" duration="13108000" />
+      <workItem from="1533836039258" duration="220000" />
+    </task>
+    <task id="LOCAL-00001" summary="possible wrong sqrt function">
+      <created>1533657279936</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1533657279936</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="35571000" />
+>>>>>>> develop
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -286,12 +428,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+=======
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
+>>>>>>> develop
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.18017058" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="TeamCity" weight="0.32936078" />
+=======
+>>>>>>> develop
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
@@ -305,6 +455,10 @@
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32936078" />
       <window_info anchor="bottom" id="CMake" order="12" weight="0.32936078" />
+<<<<<<< HEAD
+=======
+      <window_info anchor="bottom" id="TeamCity" order="13" weight="0.32936078" />
+>>>>>>> develop
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -318,6 +472,16 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+<<<<<<< HEAD
+=======
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="possible wrong sqrt function" />
+    <option name="LAST_COMMIT_MESSAGE" value="possible wrong sqrt function" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+>>>>>>> develop
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/adaptive_manifold_filter.hpp">
       <provider selected="true" editor-type-id="text-editor">
@@ -326,6 +490,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -356,11 +521,39 @@
             <element signature="e#5987#5999#0" expanded="true" />
             <element signature="e#6122#6134#0" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/adaptive_manifold.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/image_processing.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14909">
+          <caret line="877" column="73" selection-start-line="877" selection-start-column="73" selection-end-line="877" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing_environment.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+>>>>>>> develop
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adaptive_manifold.hpp">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="416">
           <caret line="436" column="23" selection-start-line="436" selection-start-column="23" selection-end-line="436" selection-end-column="23" />
           <folding>
@@ -374,6 +567,10 @@
             <element signature="e#4091#4103#0" expanded="true" />
             <element signature="e#4266#4278#0" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="335">
+          <caret line="878" column="77" lean-forward="true" selection-start-line="878" selection-start-column="77" selection-end-line="878" selection-end-column="77" />
+>>>>>>> develop
         </state>
       </provider>
     </entry>
