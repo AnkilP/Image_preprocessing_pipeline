@@ -1,29 +1,26 @@
 #include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/contrib/contrib.hpp>
-#include <opencv2/photo/photo.hpp>
-#include "adaptive_manifold_filter.hpp"
-
-using namespace std;
-using namespace cv;
+//#include <opencv2/contrib/contrib.hpp>
+//#include <opencv2/photo/photo.hpp>
+#include "adaptive_manifold.hpp"
 
 int main(int argc, const char* argv[])
 {
-	CommandLineParser cmd(argc, argv,
-		"{ i | input              |      | Input image }"
-		"{ o | output             |      | Output image }"
-		"{ j | joint              |      | Image for joint filtering (optional) }"
-		"{ s | sigma_s            | 16.0 | Filter spatial standard deviation }"
-		"{ r | sigma_r            | 0.2  | Filter range standard deviation }"
-		"{ t | tree_height        | -1   | Height of the manifold tree (default = -1 : automatically computed) }"
-		"{ i | num_pca_iterations | 1    | Number of iterations to computed the eigenvector v1 }"
-		"{ h | help               |      | Print help message }"
-	);
+//	CommandLineParser cmd(argc, argv,
+//		"{ i | input              |      | Input image }"
+//		"{ o | output             |      | Output image }"
+//		"{ j | joint              |      | Image for joint filtering (optional) }"
+//		"{ s | sigma_s            | 16.0 | Filter spatial standard deviation }"
+//		"{ r | sigma_r            | 0.2  | Filter range standard deviation }"
+//		"{ t | tree_height        | -1   | Height of the manifold tree (default = -1 : automatically computed) }"
+//		"{ i | num_pca_iterations | 1    | Number of iterations to computed the eigenvector v1 }"
+//		"{ h | help               |      | Print help message }"
+//	);
 
 	if (cmd.get<bool>("help"))
 	{
-		cout << "This sample demonstrates adaptive manifold filter algorithm" << endl;
+        cout << "Adaptive Manifolds Test #3" << endl;
 		cmd.printParams();
 		return 0;
 	}
@@ -43,14 +40,14 @@ int main(int argc, const char* argv[])
 		return -1;
 	}
 
-	Mat img = imread(inputImageName);
+    cv::Mat img = imread(inputImageName);
 	if (img.empty())
 	{
 		cerr << "Can't open image - " << inputImageName << endl;
 		return -1;
 	}
 
-	Mat jointImg;
+    cv::Mat jointImg;
 	if (!jointImageName.empty())
 	{
 		jointImg = imread(jointImageName);
@@ -67,21 +64,21 @@ int main(int argc, const char* argv[])
 	filter->set("tree_height", tree_height);
 	filter->set("num_pca_iterations", num_pca_iterations);
 
-	Mat dst, tilde_dst;
+    cv::Mat dst, tilde_dst;
 	filter->apply(img, dst, tilde_dst, jointImg);
 
-	TickMeter tm;
-	tm.start();
-	filter->apply(img, dst, tilde_dst, jointImg);
-	tm.stop();
-	cout << "Time : " << tm.getTimeMilli() << " ms" << endl;
+//	TickMeter tm;
+//	tm.start();
+//	filter->apply(img, dst, tilde_dst, jointImg);
+//	tm.stop();
+//	cout << "Time : " << tm.getTimeMilli() << " ms" << endl;
 
-	Mat nlm_dst;
-	fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
-	tm.reset(); tm.start();
-	fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
-	tm.stop();
-	cout << "NLM : " << tm.getTimeMilli() << " ms" << endl;
+    //Mat nlm_dst;
+    //fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
+//	tm.reset(); tm.start();
+    //fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
+//	tm.stop();
+//	cout << "NLM : " << tm.getTimeMilli() << " ms" << endl;
 
 	if (!outputImageName.empty())
 	{

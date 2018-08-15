@@ -4,6 +4,7 @@ project(Image_preprocessing_pipeline)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
+link_directories(.)
 
 add_executable(Image_preprocessing_pipeline adaptive_manifold.cpp adaptive_manifold.hpp)
 

@@ -1,5 +1,5 @@
 //
-// Created by some1 on 8/2/2018.
+// Created by ankilp on 8/2/2018.
 //
 
 #include "adaptive_manifold.hpp"

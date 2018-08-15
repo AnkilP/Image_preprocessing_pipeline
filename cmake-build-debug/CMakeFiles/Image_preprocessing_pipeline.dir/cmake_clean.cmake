@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Image_preprocessing_pipeline.dir/adaptive_manifold.cpp.obj"
+  "CMakeFiles/Image_preprocessing_pipeline.dir/adaptive_manifold.cpp.o"
   "Image_preprocessing_pipeline.pdb"
-  "Image_preprocessing_pipeline.exe"
-  "Image_preprocessing_pipeline.exe.manifest"
-  "Image_preprocessing_pipeline.lib"
+  "Image_preprocessing_pipeline"
 )
 
 # Per-language clean rules from dependency scanning.
