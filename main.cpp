@@ -1,31 +1,12 @@
 #include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-//#include <opencv2/contrib/contrib.hpp>
-//#include <opencv2/photo/photo.hpp>
+
 #include "adaptive_manifold.hpp"
 
 int main(int argc, const char* argv[])
 {
-//	CommandLineParser cmd(argc, argv,
-//		"{ i | input              |      | Input image }"
-//		"{ o | output             |      | Output image }"
-//		"{ j | joint              |      | Image for joint filtering (optional) }"
-//		"{ s | sigma_s            | 16.0 | Filter spatial standard deviation }"
-//		"{ r | sigma_r            | 0.2  | Filter range standard deviation }"
-//		"{ t | tree_height        | -1   | Height of the manifold tree (default = -1 : automatically computed) }"
-//		"{ i | num_pca_iterations | 1    | Number of iterations to computed the eigenvector v1 }"
-//		"{ h | help               |      | Print help message }"
-//	);
-
-	if (cmd.get<bool>("help"))
-	{
-        cout << "Adaptive Manifolds Test #3" << endl;
-		cmd.printParams();
-		return 0;
-	}
-
-	const string inputImageName = cmd.get<string>("input");
+	const string inputImageName = //cmd.get<string>("input");
 	const string outputImageName = cmd.get<string>("output");
 	const string jointImageName = cmd.get<string>("joint");
 	const double sigma_s = cmd.get<double>("sigma_s");
@@ -66,19 +47,6 @@ int main(int argc, const char* argv[])
 
     cv::Mat dst, tilde_dst;
 	filter->apply(img, dst, tilde_dst, jointImg);
-
-//	TickMeter tm;
-//	tm.start();
-//	filter->apply(img, dst, tilde_dst, jointImg);
-//	tm.stop();
-//	cout << "Time : " << tm.getTimeMilli() << " ms" << endl;
-
-    //Mat nlm_dst;
-    //fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
-//	tm.reset(); tm.start();
-    //fastNlMeansDenoisingColored(img, nlm_dst, 10.0, 10.0);
-//	tm.stop();
-//	cout << "NLM : " << tm.getTimeMilli() << " ms" << endl;
 
 	if (!outputImageName.empty())
 	{
