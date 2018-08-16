@@ -1,4 +1,4 @@
-/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /ClionProjects/Image_preprocessing_pipeline
+/home/ankilp/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/ankilp/ClionProjects/Image_preprocessing_pipeline
 -- The C compiler identification is GNU 8.2.0
 -- The CXX compiler identification is GNU 8.2.0
 -- Check for working C compiler: /usr/bin/cc
@@ -14,5 +14,8 @@
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
 -- Configuring done
+CMake Error: CMake can not determine linker language for target: Image_preprocessing_pipeline
+CMake Error: Cannot determine link language for target "Image_preprocessing_pipeline".
 -- Generating done
--- Build files have been written to: /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug
+-- Build files have been written to: /home/ankilp/ClionProjects/Image_preprocessing_pipeline/cmake-build-debug
+Unable to determine product file path for target Image_preprocessing_pipeline. Running and debugging will be unavailable.

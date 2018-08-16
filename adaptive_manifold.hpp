@@ -18,18 +18,16 @@ requested from Publications Dept., ACM, Inc., 2 Penn Plaza, Suite 701, New York,
 © 2012 ACM 0730-0301/2012/08-ART33 $15.00 DOI 10.1145/2185520.2185529
 http://doi.acm.org/10.1145/2185520.2185529
  */
-
-//
-
-#ifndef IMAGE_PREPROCESSING_PIPELINE_ADAPTIVE_MANIFOLD_HPP
-#define IMAGE_PREPROCESSING_PIPELINE_ADAPTIVE_MANIFOLD_HPP
-
-
-#include "adaptive_manifold.hpp"
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <limits>
 #include <algorithm>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include <math.h>
 
@@ -37,10 +35,26 @@ http://doi.acm.org/10.1145/2185520.2185529
 class Image_Preprocessing{
 protected: //TODO: allocate memory for two images
     cv::Mat image;
-    cv::Mat_ cpy_image;
+    cv::Mat_<cv::Vec3b> cpy_image;
+    cv::Mat_<float> t;
+
+    template <typename T>
+    void ensureSizeIsEnough(int rows, int cols, cv::Mat_<T>& m);
+
+    template <typename T>
+    void ensureSizeIsEnough(const cv::Size, cv::Mat_<T>& m);
+
+    template <typename T>
+    void h_filter(const cv::Mat_<T>& src, cv::Mat_<T>& dst, float sigma);
+
+    void rdivide(const cv::Mat_<cv::Point3f>& a, const cv::Mat_<float>& b, cv::Mat_<cv::Point3f> dst);
+
+    template <typename T>
+    void times(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst);
 
 public:
-    Image_Preprocessing();
+    Image_Preprocessing() = default; //default constructor
+    Image_Preprocessing(cv::Mat & imageStream);
     ~Image_Preprocessing();
     inline double Log2(double n)
     {
@@ -65,7 +79,7 @@ public:
         return pow(2.0, floor(Log2(r)));
     }
 
-    virtual void channelsSum(const Mat_<cv::Point3f>& src, cv::Mat_<float>& dst);
+    virtual void channelsSum(const cv::Mat_<cv::Point3f>& src, cv::Mat_<float>& dst);
     virtual void phi(const cv::Mat_<float>& src, cv::Mat_<float>& dst, float sigma);
     virtual void catCn(const cv::Mat_<cv::Point3f>& a, const cv::Mat_<float>& b, cv::Mat_<cv::Vec4f>& dst);
 
@@ -74,43 +88,99 @@ public:
     virtual void diffY(const cv::Mat_ <cv::Point3f> &src, cv::Mat_ <cv::Point3f> &dst);
 
     virtual void split_3_1(const cv::Mat_<cv::Vec4f>& src, cv::Mat_<cv::Point3f>& dst1, cv::Mat_<float>& dst2);
-    virtual void computeEigenVector(const cv::Mat_<float>& X, const cv::Mat_<cv::uchar>& mask, cv::Mat_<float>& dst, int num_pca_iterations, const cv::Mat_<float>& rand_vec);
+    virtual void computeEigenVector(const cv::Mat_<float>& X, const cv::Mat_<uchar>& mask, cv::Mat_<float>& dst, int num_pca_iterations, const cv::Mat_<float>& rand_vec);
 
 
-    template <typename T>
-    virtual void ensureSizeIsEnough(int rows, int cols, cv::Mat_<T>& m);
-
-    template <typename T>
-    virtual void ensureSizeIsEnough(const cv::Size, cv::Mat_<T>& m);
-
-    template <typename T>
-    virtual void h_filter(const cv::Mat_<T>& src, cv::Mat_<T>& dst, float sigma);
-
-    template <typename T>
-    virtual void rdivide(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst);
-
-    template <typename T>
-    virtual void times(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst)
+    
     //virtual void apply_algorithm();
     //virtual ~Image_Preprocessing();
 };
 
-Image_Preprocessing::Image_Preprocessing() {
-    image = cv::Zeros(cv::Size(1920,1200)); //TODO: Rosify to get input from camera OR camera input from our own camera driver
+Image_Preprocessing::Image_Preprocessing(cv::Mat & imageStream) {
+    image = imageStream; //TODO: Rosify to get input from camera OR camera input from our own camera driver
     cpy_image = image.clone();
 }
 
 Image_Preprocessing::~Image_Preprocessing() {
     image.release();
-    cpy_image.release;
+    cpy_image.release();
     t.release();
+}
+
+template <typename T>
+void Image_Preprocessing::h_filter(const cv::Mat_<T>& src, cv::Mat_<T>& dst, float sigma){
+    
+    const float a = exp(-sqrt(2.0f) / sigma);
+    ensureSizeIsEnough(src.size(), dst);
+    src.copyTo(dst);
+    for (int y = 0; y < src.rows; ++y){
+        const T* src_row = src[y];
+        T* dst_row = dst[y];
+        for (int x = 1; x < src.cols; ++x)
+        {
+            dst_row[x] = src_row[x] + a * (src_row[x - 1] - src_row[x]);
+        }
+        for (int x = src.cols - 2; x >= 0; --x)
+        {
+            dst_row[x] = dst_row[x] + a * (dst_row[x + 1] - dst_row[x]);
+        }
+    }
+    for (int y = 1; y < src.rows; ++y){
+        T* dst_cur_row = dst[y];
+        T* dst_prev_row = dst[y - 1];
+        for (int x = 0; x < src.cols; ++x)
+        {
+            dst_cur_row[x] = dst_cur_row[x] + a * (dst_prev_row[x] - dst_cur_row[x]);
+        }
+    }
+    for (int y = src.rows - 2; y >= 0; --y){
+        T* dst_cur_row = dst[y];
+        T* dst_prev_row = dst[y + 1];
+        for (int x = 0; x < src.cols; ++x)
+        {
+            dst_cur_row[x] = dst_cur_row[x] + a * (dst_prev_row[x] - dst_cur_row[x]);
+        }
+    }
+}
+
+void Image_Preprocessing::rdivide(const cv::Mat_<cv::Point3f>& a, const cv::Mat_<float>& b, cv::Mat_<cv::Point3f> dst){
+    ensureSizeIsEnough(a.size(), dst);
+    dst.setTo(0);
+    for (int y = 0; y < a.rows; ++y){
+        const cv::Point3f* a_row = a[y];
+        const float* b_row = b[y];
+        cv::Point3f* dst_row = dst[y];
+
+        for (int x = 0; x < a.cols; ++x){
+            if (b_row[x] > std::numeric_limits<float>::epsilon())
+                dst_row[x] = a_row[x] * (1.0f / b_row[x]);
+        }
+    }
+}
+
+
+//element wise multipication of two matrices - should have Point3f types
+template <typename T>
+void Image_Preprocessing::times(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst){
+
+    ensureSizeIsEnough(a.size(), dst);
+
+    for (int y = 0; y < a.rows; ++y){
+        const T* a_row = a[y];
+        const float* b_row = b[y];
+        T* dst_row = dst[y];
+
+        for (int x = 0; x < a.cols; ++x){ //multiplying vectors of three elements not single numbers
+            dst_row[x] = a_row[x] * b_row[x];
+        }
+    }
 }
 
 class Adaptive_Manifold : public Image_Preprocessing {
 
 private:
-    cv::cv::Mat_<cv::Point3f> eta_1;
-    cv::Mat_<cv::uchar> cluster_1;
+    cv::Mat_<cv::Point3f> eta_1;
+    cv::Mat_<uchar> cluster_1;
 
     cv::Mat_<cv::Point3f> tilde_dst;
     cv::Mat_<float> alpha;
@@ -140,9 +210,9 @@ private:
     cv::Mat_<float> pixel_dist_to_manifold_squared;
     cv::Mat_<float> gaussian_distance_weights;
     cv::Mat_<cv::Point3f> Psi_splat;
-    cv::Mat_<Vec4f> Psi_splat_joined;
-    cv::Mat_<Vec4f> Psi_splat_joined_resized;
-    cv::Mat_<Vec4f> blurred_projected_values;
+    cv::Mat_<cv::Vec4f> Psi_splat_joined;
+    cv::Mat_<cv::Vec4f> Psi_splat_joined_resized;
+    cv::Mat_<cv::Vec4f> blurred_projected_values;
     cv::Mat_<cv::Point3f> w_ki_Psi_blur;
     cv::Mat_<float> w_ki_Psi_blur_0;
     cv::Mat_<cv::Point3f> w_ki_Psi_blur_resized;
@@ -153,9 +223,9 @@ private:
     cv::Mat_<float> theta;
 
     std::vector<cv::Mat_<cv::Point3f>> eta_minus;
-    std::vector<cv::Mat_<cv::uchar>> cluster_minus;
+    std::vector<cv::Mat_<uchar>> cluster_minus;
     std::vector<cv::Mat_<cv::Point3f>> eta_plus;
-    std::vector<cv::Mat_<cv::uchar>> cluster_plus;
+    std::vector<cv::Mat_<uchar>> cluster_plus;
 
     cv::Mat_<cv::Point3f> src_f_;
     cv::Mat_<cv::Point3f> src_joint_f_;
@@ -185,20 +255,21 @@ public:
     void display(){
         std::cout << Log2(2.0) << std::endl;
     }
-    virtual void random_number_generation(cv::Mat & src, cv::Mat & src_joint, const cv::Size & srcSize);
-    virtual void TransformedDomainRecursiveFilter(const cv::Mat_ <cv::Vec4f> &I, const cv::Mat_<float> &DH,
-                                                  const cv::Mat_<float> &DV, cv::Mat_ <cv::Vec4f> &dst, float sigma);
+    void random_number_generation(cv::Mat & src, cv::Mat & src_joint, const cv::Size & srcSize);
 
-    virtual void
-    RF_filter(const cv::Mat_ <cv::Vec4f> &src, const cv::Mat_ <cv::Point3f> &src_joint, cv::Mat_ <cv::Vec4f> &dst,
-              float sigma_s, float sigma_r);
-    void apply_algorithm();
-    virtual void calcEta(const cv::Mat_<cv::Point3f>& src_joint_f, const cv::Mat_<float>& theta, const cv::Mat_<cv::uchar>& cluster, cv::Mat_<cv::Point3f>& dst, float sigma_s, float df);
-    virtual void buildManifoldsAndPerformFiltering(const cv::Mat_<cv::Point3f>& eta_k, const cv::Mat_<cv::uchar>& cluster_k, int current_tree_level);
+    void TransformedDomainRecursiveFilter(const cv::Mat_ <cv::Vec4f> &I, const cv::Mat_<float> &DH, const cv::Mat_<float> &DV, cv::Mat_ <cv::Vec4f> &dst, float sigma);
+
+    void RF_filter(const cv::Mat_ <cv::Vec4f> &src, const cv::Mat_ <cv::Point3f> &src_joint, cv::Mat_ <cv::Vec4f> &dst, float sigma_s, float sigma_r);
+
+    void apply_algorithm(cv::Mat& src, cv::Mat& dst, cv::Mat& tilde_dst, cv::Mat& src_joint);
+    
+    void calcEta(const cv::Mat_<cv::Point3f>& src_joint_f, const cv::Mat_<float>& theta, const cv::Mat_<uchar>& cluster, cv::Mat_<cv::Point3f>& dst, float sigma_s, float df);
+
+    void buildManifoldsAndPerformFiltering(const cv::Mat_<cv::Point3f>& eta_k, const cv::Mat_<uchar>& cluster_k, int current_tree_level);
 
 };
 
-Adaptive_Manifold::Adaptive_Manifold(): Image_Preprocessing() {
+Adaptive_Manifold::Adaptive_Manifold() {
     sigma_s_ = 16.0;
     sigma_r_ = 0.2;
     tree_height_ = -1;
@@ -262,20 +333,20 @@ Adaptive_Manifold::~Adaptive_Manifold() {
 
     min_pixel_dist_to_manifold_squared_.release();
 }
-class MLAA : Image_Preprocessing {
-public:
-    //void apply_algorithm();
-};
+// class MLAA : Image_Preprocessing {
+// public:
+//     //void apply_algorithm();
+// };
 
-class classic_CV : Image_Preprocessing{
-public:
-    //void apply_algorithm();
-};
+// class classic_CV : Image_Preprocessing{
+// public:
+//     //void apply_algorithm();
+// };
 
-class camera_driver : Image_Preprocessing {
-public:
-    //TODO: incorporate camera driver in here using either flycap2 or spinnaker
-};
+// class camera_driver : Image_Preprocessing {
+// public:
+//     //TODO: incorporate camera driver in here using either flycap2 or spinnaker
+// };
 
 
 template <typename T>
@@ -308,92 +379,14 @@ void Image_Preprocessing::ensureSizeIsEnough(const cv::Size size, cv::Mat_<T>& m
     Image_Preprocessing::ensureSizeIsEnough(size.height, size.width, m);
 }
 
-template <typename T>
-void Image_Preprocessing::h_filter(const cv::Mat_<T>& src, cv::Mat_<T>& dst, float sigma){
-    //only runs during debug
-    cv::CV_DbgAssert(src.depth() == cv::CV_32F);
-    const float a = exp(-sqrt(2.0f) / sigma);
-    ensureSizeIsEnough(src.size(), dst);
-    src.copyTo(dst);
-    for (int y = 0; y < src.rows; ++y){
-        const T* src_row = src[y];
-        T* dst_row = dst[y];
-        for (int x = 1; x < src.cols; ++x)
-        {
-            dst_row[x] = src_row[x] + a * (src_row[x - 1] - src_row[x]);
-        }
-        for (int x = src.cols - 2; x >= 0; --x)
-        {
-            dst_row[x] = dst_row[x] + a * (dst_row[x + 1] - dst_row[x]);
-        }
-    }
-    for (int y = 1; y < src.rows; ++y){
-        T* dst_cur_row = dst[y];
-        T* dst_prev_row = dst[y - 1];
-        for (int x = 0; x < src.cols; ++x)
-        {
-            dst_cur_row[x] = dst_cur_row[x] + a * (dst_prev_row[x] - dst_cur_row[x]);
-        }
-    }
-    for (int y = src.rows - 2; y >= 0; --y){
-        T* dst_cur_row = dst[y];
-        T* dst_prev_row = dst[y + 1];
-        for (int x = 0; x < src.cols; ++x)
-        {
-            dst_cur_row[x] = dst_cur_row[x] + a * (dst_prev_row[x] - dst_cur_row[x]);
-        }
-    }
-}
-
-template<typename T>
-void Image_Preprocessing::rdivide(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst){
-    //debug asserts
-    cv::CV_DbgAssert(a.depth() == cv::CV_32F);
-    cv::CV_DbgAssert(a.size() == b.size());
-
-    ensureSizeIsEnough(a.size(), dst);
-    dst.setTo(0);
-
-    for (int y = 0; y < a.rows; ++y){
-        const T* a_row = a[y];
-        const float* b_row = b[y];
-        T* dst_row = dst[y];
-
-        for (int x = 0; x < a.cols; ++x){
-            if (b_row[x] > std::numeric_limits<float>::epsilon())
-                dst_row[x] = a_row[x] * (1.0f / b_row[x]);
-        }
-    }
-}
-
-
-//element wise multipication of two matrices - should have Point3f types
-template <typename T>
-void Image_Preprocessing::times(const cv::Mat_<T>& a, const cv::Mat_<float>& b, cv::Mat_<T>& dst){
-    cv::CV_DbgAssert(a.depth() == cv::CV_32F);
-    cv::CV_DbgAssert(a.size() == b.size());
-
-    ensureSizeIsEnough(a.size(), dst);
-
-    for (int y = 0; y < a.rows; ++y){
-        const T* a_row = a[y];
-        const float* b_row = b[y];
-        T* dst_row = dst[y];
-
-        for (int x = 0; x < a.cols; ++x){ //multiplying vectors of three elements not single numbers
-            dst_row[x] = a_row[x] * b_row[x];
-        }
-    }
-}
-
 void Adaptive_Manifold::apply_algorithm(cv::Mat& src, cv::Mat& dst, cv::Mat& tilde_dst, cv::Mat& src_joint) {
     const cv::Size srcSize = src.size();
-    cv::CV_Assert(src.type() == cv::CV_8UC3);
-    cv::CV_Assert(src_joint.empty() || (src_joint.type() == src.type() && src_joint.size() == srcSize));
+    //cv::CV_Assert(src.type() == cv::CV_8UC3);
+    //cv::CV_Assert(src_joint.empty() || (src_joint.type() == src.type() && src_joint.size() == srcSize));
     Image_Preprocessing::ensureSizeIsEnough(srcSize, src_f_);
     src.convertTo(src_f_, src_f_.type(), 1.0 / 255.0);
 
-    Adaptive_Manifold::random_number_generation(src, src_joint, const cv::Size & srcSize);
+    Adaptive_Manifold::random_number_generation(src, src_joint, srcSize);
     //updating tree height
     cur_tree_height_ = tree_height_ > 0 ? tree_height_ : computeManifoldTreeHeight(sigma_s_, sigma_r_);
 
@@ -411,7 +404,7 @@ void Adaptive_Manifold::apply_algorithm(cv::Mat& src, cv::Mat& dst, cv::Mat& til
     h_filter(src_joint_f_, eta_1, static_cast<float>(sigma_s_));
 
     ensureSizeIsEnough(srcSize, cluster_1);
-    cluster_1.setTo(Scalar::all(1));
+    cluster_1.setTo(cv::Scalar::all(1));
 
     eta_minus.resize(cur_tree_height_);
     cluster_minus.resize(cur_tree_height_);
@@ -444,11 +437,11 @@ void Adaptive_Manifold::apply_algorithm(cv::Mat& src, cv::Mat& dst, cv::Mat& til
  * Summary: Determines random number starting from center pixel
  */
 
-virtual void Adaptive_Manifold::random_number_generation(cv::Mat & src, cv::Mat & src_joint, const cv::Size & srcSize) {
+void Adaptive_Manifold::random_number_generation(cv::Mat & src, cv::Mat & src_joint, const cv::Size & srcSize) {
     // Use the center pixel as seed to random number generation.
     const cv::Point3f centralPix = src_f_(src_f_.rows / 2, src_f_.cols / 2);
     const double seedCoeff = (centralPix.x + centralPix.y + centralPix.z + 1.0f) / 4.0f;
-    rng_.state = static_cast<cv::uint64>(seedCoeff * numeric_limits<cv::uint64>::max());
+    rng_.state = static_cast<uint64>(seedCoeff * std::numeric_limits<uint64>::max());
 
     ensureSizeIsEnough(srcSize, sum_w_ki_Psi_blur_);
     sum_w_ki_Psi_blur_.setTo(cv::Scalar::all(0));
@@ -459,7 +452,8 @@ virtual void Adaptive_Manifold::random_number_generation(cv::Mat & src, cv::Mat 
     ensureSizeIsEnough(srcSize, min_pixel_dist_to_manifold_squared_);
     min_pixel_dist_to_manifold_squared_.setTo(cv::Scalar::all(std::numeric_limits<float>::max()));
 }
-virtual void Image_Preprocessing::channelsSum(const Mat_<cv::Point3f>& src, cv::Mat_<float>& dst){
+
+void Image_Preprocessing::channelsSum(const cv::Mat_<cv::Point3f>& src, cv::Mat_<float>& dst){
     ensureSizeIsEnough(src.size(), dst);
     for (int y = 0; y < src.rows; ++y)
     {
@@ -473,7 +467,7 @@ virtual void Image_Preprocessing::channelsSum(const Mat_<cv::Point3f>& src, cv::
     }
 }
 
-virtual void Image_Preprocessing::phi(const cv::Mat_<float>& src, cv::Mat_<float>& dst, float sigma){
+void Image_Preprocessing::phi(const cv::Mat_<float>& src, cv::Mat_<float>& dst, float sigma){
     ensureSizeIsEnough(src.size(), dst);
     for (int y = 0; y < dst.rows; ++y)
     {
@@ -486,7 +480,7 @@ virtual void Image_Preprocessing::phi(const cv::Mat_<float>& src, cv::Mat_<float
     }
 }
 
-virtual void Image_Preprocessing::catCn(const Mat_<cv::Point3f>& a, const cv::Mat_<float>& b, Mat_<cv::Vec4f>& dst)
+void Image_Preprocessing::catCn(const cv::Mat_<cv::Point3f>& a, const cv::Mat_<float>& b, cv::Mat_<cv::Vec4f>& dst)
 {
     ensureSizeIsEnough(a.size(), dst);
     for (int y = 0; y < a.rows; ++y)
@@ -503,7 +497,7 @@ virtual void Image_Preprocessing::catCn(const Mat_<cv::Point3f>& a, const cv::Ma
     }
 }
 
-virtual void Image_Preprocessing::diffY(const cv::Mat_ <cv::Point3f> &src, cv::Mat_ <cv::Point3f> &dst) {
+void Image_Preprocessing::diffY(const cv::Mat_ <cv::Point3f> &src, cv::Mat_ <cv::Point3f> &dst) {
     ensureSizeIsEnough(src.rows - 1, src.cols, dst);
 
     for (int y = 0; y < src.rows - 1; ++y) {
@@ -517,7 +511,7 @@ virtual void Image_Preprocessing::diffY(const cv::Mat_ <cv::Point3f> &src, cv::M
     }
 }
 
-virtual void Image_Preprocessing::diffX(const cv::Mat_ <cv::Point3f> &src, cv::Mat_ <cv::Point3f> &dst) {
+void Image_Preprocessing::diffX(const cv::Mat_ <cv::Point3f> &src, cv::Mat_ <cv::Point3f> &dst) {
     ensureSizeIsEnough(src.rows, src.cols - 1, dst);
 
     for (int y = 0; y < src.rows; ++y) {
@@ -530,10 +524,9 @@ virtual void Image_Preprocessing::diffX(const cv::Mat_ <cv::Point3f> &src, cv::M
     }
 }
 
-virtual void
-Adaptive_Manifold::TransformedDomainRecursiveFilter(const cv::Mat_ <cv::Vec4f> &I, const cv::Mat_<float> &DH,
+void Adaptive_Manifold::TransformedDomainRecursiveFilter(const cv::Mat_ <cv::Vec4f> &I, const cv::Mat_<float> &DH,
                                                     const cv::Mat_<float> &DV, cv::Mat_ <cv::Vec4f> &dst, float sigma) {
-    cv::CV_DbgAssert(I.size() == DH.size());
+    
 
     const float a = exp(-sqrt(2.0f) / sigma);
 
@@ -626,9 +619,9 @@ Adaptive_Manifold::TransformedDomainRecursiveFilter(const cv::Mat_ <cv::Vec4f> &
     }
 }
 
-virtual void Adaptive_Manifold::RF_filter(const cv::Mat_ <cv::Vec4f> &src, const cv::Mat_ <cv::Point3f> &src_joint,
+void Adaptive_Manifold::RF_filter(const cv::Mat_ <cv::Vec4f> &src, const cv::Mat_ <cv::Point3f> &src_joint,
                                           cv::Mat_ <cv::Vec4f> &dst, float sigma_s, float sigma_r) {
-    cv::CV_DbgAssert(src_joint.size() == src.size());
+   
 
     diffX(src_joint, dIcdx);
     diffY(src_joint, dIcdy);
@@ -692,11 +685,8 @@ void Image_Preprocessing::split_3_1(const cv::Mat_<cv::Vec4f>& src, cv::Mat_<cv:
     }
 }
 
-virtual void Image_Preprocessing::computeEigenVector(const cv::Mat_<float>& X, const cv::Mat_<cv::uchar>& mask, cv::Mat_<float>& dst, int num_pca_iterations, const cv::Mat_<float>& rand_vec)
+void Image_Preprocessing::computeEigenVector(const cv::Mat_<float>& X, const cv::Mat_<uchar>& mask, cv::Mat_<float>& dst, int num_pca_iterations, const cv::Mat_<float>& rand_vec)
 {
-    cv::CV_DbgAssert(X.cols == rand_vec.cols);
-    cv::CV_DbgAssert(X.rows == mask.size().area());
-    cv::CV_DbgAssert(rand_vec.rows == 1);
 
     ensureSizeIsEnough(rand_vec.size(), dst);
     rand_vec.copyTo(dst);
@@ -707,7 +697,7 @@ virtual void Image_Preprocessing::computeEigenVector(const cv::Mat_<float>& X, c
 
     for (int i = 0; i < num_pca_iterations; ++i)
     {
-        t.setTo(Scalar::all(0));
+        t.setTo(cv::Scalar::all(0));
 
         for (int y = 0, ind = 0; y < mask.rows; ++y)
         {
@@ -746,7 +736,7 @@ virtual void Image_Preprocessing::computeEigenVector(const cv::Mat_<float>& X, c
     cv::divide(dst, n, dst);
 }
 
-virtual void Adaptive_Manifold::calcEta(const cv::Mat_<cv::Point3f>& src_joint_f, const cv::Mat_<float>& theta, const cv::Mat_<cv::uchar>& cluster, cv::Mat_<cv::Point3f>& dst, float sigma_s, float df)
+void Adaptive_Manifold::calcEta(const cv::Mat_<cv::Point3f>& src_joint_f, const cv::Mat_<float>& theta, const cv::Mat_<uchar>& cluster, cv::Mat_<cv::Point3f>& dst, float sigma_s, float df)
 {
     ensureSizeIsEnough(theta.size(), theta_masked);
     theta_masked.setTo(cv::Scalar::all(0));
@@ -768,7 +758,7 @@ virtual void Adaptive_Manifold::calcEta(const cv::Mat_<cv::Point3f>& src_joint_f
     rdivide(numerator_filtered, denominator_filtered, dst);
 }
 
-virtual void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_<cv::Point3f>& eta_k, const cv::Mat_<cv::uchar>& cluster_k, int current_tree_level)
+void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_<cv::Point3f>& eta_k, const cv::Mat_<uchar>& cluster_k, int current_tree_level)
 {
     // Compute downsampling factor
 
@@ -823,7 +813,7 @@ virtual void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_
     ensureSizeIsEnough(eta_k_small.size(), Psi_splat_joined_resized);
     cv::resize(Psi_splat_joined, Psi_splat_joined_resized, eta_k_small.size());
 
-    RF_filter(Psi_splat_joined_resized, eta_k_small, blurred_projected_values, static_cast<float>(sigma_s_ / df), sigma_r_over_sqrt_2_, buf_);
+    RF_filter(Psi_splat_joined_resized, eta_k_small, blurred_projected_values, static_cast<float>(sigma_s_ / df), sigma_r_over_sqrt_2_);
 
     split_3_1(blurred_projected_values, w_ki_Psi_blur, w_ki_Psi_blur_0);
 
@@ -854,7 +844,7 @@ virtual void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_
         ensureSizeIsEnough(1, nX.cols, rand_vec);
         rng_.fill(rand_vec, cv::RNG::UNIFORM, -0.5, 0.5);
 
-        computeEigenVector(nX, cluster_k, v1, num_pca_iterations_, rand_vec, buf_);
+        computeEigenVector(nX, cluster_k, v1, num_pca_iterations_, rand_vec);
 
         // Algorithm 1, Step 3: Segment pixels into two clusters -- Eq. (6)
 
@@ -863,12 +853,12 @@ virtual void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_
 
         const cv::Mat_<float> dot(src_joint_f_.rows, src_joint_f_.cols, (float*)Nx_v1_mult.data);
 
-        cv::Mat_<cv::uchar>& cluster_minus = cluster_minus[current_tree_level];
+        cv::Mat_<uchar>& cluster_minus = cluster_minus[current_tree_level];
         ensureSizeIsEnough(dot.size(), cluster_minus);
         cv::compare(dot, 0, cluster_minus, cv::CMP_LT);
         cv::bitwise_and(cluster_minus, cluster_k, cluster_minus);
 
-        cv::Mat_<cv::uchar>& cluster_plus = cluster_plus[current_tree_level];
+        cv::Mat_<uchar>& cluster_plus = cluster_plus[current_tree_level];
         ensureSizeIsEnough(dot.size(), cluster_plus);
         cv::compare(dot, 0, cluster_plus, cv::CMP_GT);
         cv::bitwise_and(cluster_plus, cluster_k, cluster_plus);
@@ -891,6 +881,4 @@ virtual void Adaptive_Manifold::buildManifoldsAndPerformFiltering(const cv::Mat_
         buildManifoldsAndPerformFiltering(eta_plus, cluster_plus, current_tree_level + 1);
     }
 }
-
-#endif //IMAGE_PREPROCESSING_PIPELINE_ADAPTIVE_MANIFOLD_HPP
 

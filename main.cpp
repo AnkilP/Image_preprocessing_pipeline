@@ -6,20 +6,20 @@
 
 int main(int argc, const char* argv[])
 {
-	const string inputImageName = //cmd.get<string>("input");
-	const string outputImageName = cmd.get<string>("output");
-	const string jointImageName = cmd.get<string>("joint");
-	const double sigma_s = cmd.get<double>("sigma_s");
-	const double sigma_r = cmd.get<double>("sigma_r");
-	const int tree_height = cmd.get<int>("tree_height");
-	const int num_pca_iterations = cmd.get<int>("num_pca_iterations");
+	// const string inputImageName = //cmd.get<string>("input");
+	// const string outputImageName = cmd.get<string>("output");
+	// const string jointImageName = cmd.get<string>("joint");
+	// const double sigma_s = cmd.get<double>("sigma_s");
+	// const double sigma_r = cmd.get<double>("sigma_r");
+	// const int tree_height = cmd.get<int>("tree_height");
+	// const int num_pca_iterations = cmd.get<int>("num_pca_iterations");
 
-	if (inputImageName.empty())
-	{
-		cerr << "Missing input image" << endl;
-		cmd.printParams();
-		return -1;
-	}
+	// if (inputImageName.empty())
+	// {
+	// 	cerr << "Missing input image" << endl;
+	// 	cmd.printParams();
+	// 	return -1;
+	// }
 
     cv::Mat img = imread(inputImageName);
 	if (img.empty())

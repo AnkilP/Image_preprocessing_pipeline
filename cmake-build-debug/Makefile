@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/ankilp/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/ankilp/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /ClionProjects/Image_preprocessing_pipeline
+CMAKE_SOURCE_DIR = /home/ankilp/ClionProjects/Image_preprocessing_pipeline
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug
+CMAKE_BINARY_DIR = /home/ankilp/ClionProjects/Image_preprocessing_pipeline/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/ankilp/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/ankilp/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/182.3911.40/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ankilp/ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles /home/ankilp/ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ankilp/ClionProjects/Image_preprocessing_pipeline/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,33 +123,6 @@ Image_preprocessing_pipeline/fast:
 	$(MAKE) -f CMakeFiles/Image_preprocessing_pipeline.dir/build.make CMakeFiles/Image_preprocessing_pipeline.dir/build
 .PHONY : Image_preprocessing_pipeline/fast
 
-adaptive_manifold.o: adaptive_manifold.cpp.o
-
-.PHONY : adaptive_manifold.o
-
-# target to build an object file
-adaptive_manifold.cpp.o:
-	$(MAKE) -f CMakeFiles/Image_preprocessing_pipeline.dir/build.make CMakeFiles/Image_preprocessing_pipeline.dir/adaptive_manifold.cpp.o
-.PHONY : adaptive_manifold.cpp.o
-
-adaptive_manifold.i: adaptive_manifold.cpp.i
-
-.PHONY : adaptive_manifold.i
-
-# target to preprocess a source file
-adaptive_manifold.cpp.i:
-	$(MAKE) -f CMakeFiles/Image_preprocessing_pipeline.dir/build.make CMakeFiles/Image_preprocessing_pipeline.dir/adaptive_manifold.cpp.i
-.PHONY : adaptive_manifold.cpp.i
-
-adaptive_manifold.s: adaptive_manifold.cpp.s
-
-.PHONY : adaptive_manifold.s
-
-# target to generate assembly for a file
-adaptive_manifold.cpp.s:
-	$(MAKE) -f CMakeFiles/Image_preprocessing_pipeline.dir/build.make CMakeFiles/Image_preprocessing_pipeline.dir/adaptive_manifold.cpp.s
-.PHONY : adaptive_manifold.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +132,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Image_preprocessing_pipeline"
-	@echo "... adaptive_manifold.o"
-	@echo "... adaptive_manifold.i"
-	@echo "... adaptive_manifold.s"
 .PHONY : help
 
 
